@@ -4,16 +4,17 @@ import edu.princeton.cs.algs4.StdDraw;
 
 import java.awt.*;
 
-public class TraceInsertion {
-    // insertion sort
+public class TraceSelection {
+    // selection sort
     public static void sort(String[] a) {
         int n = a.length;
         for (int i = 0; i < n; i++) {
-            int j;
-            for (j = i; j > 0 && less(a[j], a[j-1]); j--) {
-                exch(a, j, j-1);
+            int min = i;
+            for (int j = i+1; j < n; j++) {
+                if (less(a[j], a[min])) min = j;
             }
-            draw(a, i, i, j);
+            draw(a, i, i, min);
+            exch(a, i, min);
         }
     }
 
@@ -30,18 +31,19 @@ public class TraceInsertion {
         return v.compareTo(w) < 0;
     }
 
-    private static void draw(String[] a, int row, int ith, int jth) {
+    // exchange a[i] and a[j]
+    private static void draw(String[] a, int row, int ith, int min) {
         StdDraw.setPenColor(StdDraw.BLACK);
         StdDraw.text(-2.50, row, ith + "");
-        StdDraw.text(-1.25, row, jth + "");
+        StdDraw.text(-1.25, row, min + "");
         for (int i = 0; i < a.length; i++) {
-            if (i == jth)      StdDraw.setPenColor(StdDraw.BOOK_RED);
-            else if (i > ith)  StdDraw.setPenColor(StdDraw.LIGHT_GRAY);
-            else if (i < jth)  StdDraw.setPenColor(StdDraw.LIGHT_GRAY);
-            else               StdDraw.setPenColor(StdDraw.BLACK);
-            StdDraw.text(i, row, a[i]);
+            if (i == min)     StdDraw.setPenColor(StdDraw.BOOK_RED);
+            else if (i < ith) StdDraw.setPenColor(StdDraw.LIGHT_GRAY);
+            else              StdDraw.setPenColor(StdDraw.BLACK);
+            StdDraw.text(i, row, a[i] + "");
         }
     }
+
 
     // display header
     private static void header(String[] a) {
@@ -52,11 +54,11 @@ public class TraceInsertion {
         for (int i = 0; i < n; i++)
             StdDraw.text(i, -2, i + "");
         StdDraw.text(-2.50, -2, "i");
-        StdDraw.text(-1.25, -2, "j");
+        StdDraw.text(-1.25, -2, "min");
         StdDraw.setPenColor(StdDraw.BOOK_RED);
         StdDraw.line(-3, -1.65, n - 0.5, -1.65);
         StdDraw.setPenColor(StdDraw.BLACK);
-        for (int i = 0; i < n; i++)
+        for (int i = 0; i < a.length; i++)
             StdDraw.text(i, -1, a[i]);
     }
 
